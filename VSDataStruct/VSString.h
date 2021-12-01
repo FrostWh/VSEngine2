@@ -1,7 +1,9 @@
 #ifndef VSSTRING_H
 #define VSSTRING_H
+
 #include "VSContainer.h"
 #include "VSMath.h"
+
 namespace VSEngine2
 {
 class VSDATESTRUCT_API VSString : public VSContainer<TCHAR>

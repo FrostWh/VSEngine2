@@ -471,6 +471,10 @@ const TCHAR* VSResourceManager::GetRenderTypeShaderPath(unsigned int RenderTypeA
 	{
 		return _T("Dx11/");
 	}
+	else if (RenderTypeAPI == VSRenderer::RAT_DIRECTX12)
+	{
+		return _T("Dx12/");
+	}
 	else
 	{
 		return _T("");

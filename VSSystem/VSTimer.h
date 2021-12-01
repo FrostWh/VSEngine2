@@ -1,7 +1,9 @@
 #ifndef VSTIMER_H
 #define VSTIMER_H
+
 #include "VSSystem.h"
 #include "VSMath.h"
+
 namespace VSEngine2
 {
 class VSSYSTEM_API VSTimer
@@ -16,6 +18,7 @@ private:
 	double m_fTime,m_fLastFPSTime,m_fTimeSlice;
 	double m_fDetTime, m_fLastTime;
 	void InitGameTime();
+
 public:
 	VSTimer();
 	~VSTimer();
@@ -28,4 +31,5 @@ public:
 	int GetRandSeed();
 };
 }
+
 #endif

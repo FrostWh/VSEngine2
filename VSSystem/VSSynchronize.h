@@ -1,6 +1,8 @@
 #ifndef VSSYNCHRONIZE_H
 #define VSSYNCHRONIZE_H
+
 #include "VSSystem.h"
+
 namespace VSEngine2
 {
 	class VSSYSTEM_API VSSynchronize
@@ -10,18 +12,21 @@ namespace VSEngine2
 		{
 
 		}
+
 		virtual ~VSSynchronize()
 		{
 		}
-		virtual void * GetHandle() = 0;
+
+		virtual void* GetHandle() = 0;
+
 		enum
 		{
 			WF_OBJECT0 = 0,
 			WF_TIMEOUT = 256,
 			WF_FAILED = 0xFFFFFFFF
 		};
-		static unsigned int WaitAll(VSSynchronize * * pSynchronize, unsigned int uiNum, bool bWaitAll,DWORD dwMilliseconds = (DWORD)-1);
-		static void VSSafeOutPutDebugString(const TCHAR * pcString, ...);
+		static unsigned int WaitAll(VSSynchronize** pSynchronize, unsigned int uiNum, bool bWaitAll, DWORD dwMilliseconds = (DWORD)-1);
+		static void VSSafeOutPutDebugString(const TCHAR* pcString, ...);
 	};
 
 	class VSSYSTEM_API VSCriticalSection
@@ -38,7 +43,7 @@ namespace VSEngine2
 		FORCEINLINE VSCriticalSection(void)
 		{
 			InitializeCriticalSection(&CriticalSection);
-			SetCriticalSectionSpinCount(&CriticalSection,4000);
+			SetCriticalSectionSpinCount(&CriticalSection, 4000);
 		}
 
 		/**
@@ -70,12 +75,12 @@ namespace VSEngine2
 	class VSSYSTEM_API VSSemaphore : public VSSynchronize
 	{
 	public:
-		VSSemaphore (unsigned int uiCount,unsigned int MaxCount);
-		virtual ~VSSemaphore ();
+		VSSemaphore(unsigned int uiCount, unsigned int MaxCount);
+		virtual ~VSSemaphore();
 
-		virtual void Enter ();
-		virtual void Leave (unsigned int uiReleaseCount);
-		virtual void * GetHandle()
+		virtual void Enter();
+		virtual void Leave(unsigned int uiReleaseCount);
+		virtual void* GetHandle()
 		{
 			return Semaphore;
 		}
@@ -83,17 +88,17 @@ namespace VSEngine2
 		void* Semaphore;
 		unsigned int m_uiMaxCount;
 	};
-	
+
 	class VSSYSTEM_API VSMutex : public VSSynchronize
 	{
 	public:
 
-		VSMutex ();
-		virtual ~VSMutex ();
+		VSMutex();
+		virtual ~VSMutex();
 
-		virtual void Enter ();
-		virtual void Leave ();
-		virtual void * GetHandle()
+		virtual void Enter();
+		virtual void Leave();
+		virtual void* GetHandle()
 		{
 			return m_Mutex;
 		}
@@ -101,6 +106,7 @@ namespace VSEngine2
 		void* m_Mutex;
 
 	};
+
 	class VSSYSTEM_API VSEvent : public VSSynchronize
 	{
 		/**
@@ -109,7 +115,7 @@ namespace VSEngine2
 		HANDLE Event;
 
 	public:
-		virtual void * GetHandle()
+		virtual void* GetHandle()
 		{
 			return Event;
 		}
@@ -143,7 +149,7 @@ namespace VSEngine2
 		*
 		* @return Returns TRUE if the event was created, FALSE otherwise
 		*/
-		virtual bool Create(bool bIsManualReset = FALSE,const TCHAR* InName = NULL);
+		virtual bool Create(bool bIsManualReset = FALSE, const TCHAR* InName = NULL);
 
 		/**
 		* Triggers the event so any waiting threads are activated
@@ -174,7 +180,7 @@ namespace VSEngine2
 
 		virtual bool IsTrigger();
 	};
-	
+
 }
 
 

@@ -1,13 +1,16 @@
 #ifndef VSMAIN_H
 #define VSMAIN_H
+
 #include "VSSystem.h"
 #include "VSPriority.h"
 #include "VSArray.h"
+
 namespace VSEngine2
 {
 	typedef bool (*Function)();
 	class VSRtti ;
 	typedef bool (*FunctionProperty)(VSRtti *);
+
 	class VSGRAPHIC_API VSMain
 	{
 	public:
@@ -20,9 +23,11 @@ namespace VSEngine2
 		static void AddTerminalFuntion(Function Func);
 		static void AddTerminalFuntion(Function Func,VSPriority *pPriority);
 		static bool Terminate();
+
 	private:
 		VSMain();
 		~VSMain();
+
 		struct Element
 		{
 		public:
@@ -31,11 +36,13 @@ namespace VSEngine2
 				Func = NULL;
 				pPriority = NULL;
 			}
+
 			~Element()
 			{
 				Func = NULL;
 				pPriority = NULL;
 			}
+
 			Function		Func;
 			VSPriority *	pPriority;
 			bool operator > (const Element& e)const
@@ -55,6 +62,7 @@ namespace VSEngine2
 					p2 = &Pr2;
 				return (*p1) > (*p2);
 			}
+
 			bool operator < (const Element& e)const
 			{
 				static VSPriority Pr1;
@@ -72,6 +80,7 @@ namespace VSEngine2
 					p2 = &Pr2;
 				return (*p1) > (*p2);
 			}
+
 			bool operator == (const Element& e)const
 			{
 				static VSPriority Pr1;
@@ -90,6 +99,7 @@ namespace VSEngine2
 				return (*p1) == (*p2);
 			}
 		};
+
 		static VSArray<Element> * ms_pInitialArray;
 		static VSArray<FunctionProperty> * ms_pInitialPropertyArray;
 		static VSArray<Function> * ms_pTerminalPropertyArray;
@@ -122,4 +132,5 @@ namespace VSEngine2
 		};
 	};
 }
+
 #endif

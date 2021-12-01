@@ -1,7 +1,10 @@
 #include "VSString.h"
+
 using namespace VSEngine2;
+
 VSString VSString::ms_StringNULL;
 TCHAR	VSString::TempBuffer[BUFFER_SIZE] = {0};
+
 VSString::VSString()
 {
 	m_pBuffer = NULL;
@@ -9,6 +12,7 @@ VSString::VSString()
 	VSMAC_ASSERT(m_pBuffer);
 	m_pBuffer[0] =_T('\0');
 }
+
 VSString::VSString(const TCHAR * String)
 {
 	VSMAC_ASSERT(String);
@@ -28,6 +32,7 @@ VSString::VSString(const TCHAR * String)
 		m_pBuffer[0] =_T('\0');
 	}
 }
+
 VSString::VSString(const VSString &String)
 {
 	m_pBuffer = NULL;
@@ -37,6 +42,7 @@ VSString::VSString(const VSString &String)
 
 	VSStrCopy(m_pBuffer,uiLength + 1,String.GetBuffer());
 }
+
 VSString::~VSString()
 {
 

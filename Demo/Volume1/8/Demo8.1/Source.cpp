@@ -1,7 +1,9 @@
 //展示智能指针的用法。
 #include <VSObject.h>
 #include <iostream>
+
 using namespace VSEngine2;
+
 class A : public VSReference
 {
 public:
@@ -21,6 +23,7 @@ A::~A()
 {
 
 }
+
 void main()
 {
 	VSInitSystem();

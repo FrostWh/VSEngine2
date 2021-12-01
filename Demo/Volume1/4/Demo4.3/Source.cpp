@@ -2,7 +2,9 @@
 #include <VSMemManager.h>
 #include <VSMap.h>
 #include <iostream>
+
 using namespace VSEngine2;
+
 void main()
 {
 	VSMap<int, char> Temp;

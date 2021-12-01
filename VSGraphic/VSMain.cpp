@@ -1,13 +1,17 @@
 #include "VSMain.h"
 #include "VSGraphicInclude.h"
+
 using namespace VSEngine2;
+
 VSArray<VSMain::Element> *VSMain::ms_pInitialArray = NULL;
 VSArray<VSMain::Element> *VSMain::ms_pTerminalArray = NULL;
 VSArray<FunctionProperty> *VSMain::ms_pInitialPropertyArray = NULL;
 VSArray<Function> *VSMain::ms_pTerminalPropertyArray = NULL;
 unsigned int VSMain::ms_uiInitialObject = 0;
 unsigned int VSMain::ms_uiTerminalObject = 0;
+
 #include "VSResourceManager.h"
+
 void VSMain::AddInitialPropertyFuntion(FunctionProperty Func)
 {
 	if(!Func)
@@ -18,6 +22,7 @@ void VSMain::AddInitialPropertyFuntion(FunctionProperty Func)
 	}
 	ms_pInitialPropertyArray->AddElement(Func);
 }
+
 void VSMain::AddTerminalPropertyFuntion(Function Func)
 {
 	if(!Func)
@@ -28,10 +33,12 @@ void VSMain::AddTerminalPropertyFuntion(Function Func)
 	}
 	ms_pTerminalPropertyArray->AddElement(Func);
 }
+
 void VSMain::AddInitialFuntion(Function Func)
 {
 	AddInitialFuntion(Func,NULL);
 }
+
 void VSMain::AddInitialFuntion(Function Func,VSPriority *pPriority)
 {
 	if(!Func)
@@ -46,10 +53,12 @@ void VSMain::AddInitialFuntion(Function Func,VSPriority *pPriority)
 	ms_pInitialArray->AddElement(e);
 
 }
+
 void VSMain::AddTerminalFuntion(Function Func)
 {
 	AddTerminalFuntion(Func,NULL);
 }
+
 void VSMain::AddTerminalFuntion(Function Func,VSPriority *pPriority)
 {
 	if(!Func)
@@ -64,6 +73,7 @@ void VSMain::AddTerminalFuntion(Function Func,VSPriority *pPriority)
 	ms_pTerminalArray->AddElement(e);
 
 }
+
 bool VSMain::Initialize()
 {
 	
@@ -97,6 +107,7 @@ bool VSMain::Initialize()
 	VSMAC_DELETE(ms_pInitialPropertyArray);
 	return 1;
 }
+
 bool VSMain::Terminate()
 {
 	VSResourceManager::CacheResource();

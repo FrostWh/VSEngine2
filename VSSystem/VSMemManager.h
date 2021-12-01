@@ -1,14 +1,17 @@
 #ifndef VSMEMMANAGER_H
 #define VSMEMMANAGER_H
+
 #include "VSSystem.h"
 #include "VSSynchronize.h"
 #include <Windows.h>
 #include <new.h>
+
 #define VS_NEW new
 #define VS_DELETE delete
 #define USE_STL_TYPE_TRAIT
+
 #ifdef USE_STL_TYPE_TRAIT
-	#include <type_traits>
+#include <type_traits>
 #endif // USE_STL_TYPE_TRAIT
 
 namespace VSEngine2
@@ -16,14 +19,14 @@ namespace VSEngine2
 
 #ifdef USE_STL_TYPE_TRAIT
 
-	#define HAS_TRIVIAL_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
-	#define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
-	#define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
-	#define HAS_TRIVIAL_COPY(T) std::is_trivially_copyable<T>::value
-	#define IS_POD(T) std::is_pod<T>::value
-	#define IS_ENUM(T) std::is_enum<T>::value
-	#define IS_EMPTY(T) std::is_empty<T>::value
-	
+#define HAS_TRIVIAL_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
+#define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
+#define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
+#define HAS_TRIVIAL_COPY(T) std::is_trivially_copyable<T>::value
+#define IS_POD(T) std::is_pod<T>::value
+#define IS_ENUM(T) std::is_enum<T>::value
+#define IS_EMPTY(T) std::is_empty<T>::value
+
 
 	/**
 	* TIsFloatType
@@ -36,12 +39,12 @@ namespace VSEngine2
 	*/
 	template<typename T> struct TIsIntegralType { enum { Value = std::is_integral<T>::value }; };
 
-	
+
 	/**
 	* TIsArithmeticType
 	*/
-	template<typename T> struct TIsArithmeticType 
-	{ 
+	template<typename T> struct TIsArithmeticType
+	{
 		enum { Value = std::is_arithmetic<T>::value };
 	};
 
@@ -49,7 +52,7 @@ namespace VSEngine2
 	* TIsPointerType
 	* @todo - exclude member pointers
 	*/
-	template<typename T> struct TIsPointerType	{ enum { Value = std::is_pointer<T>::value }; };
+	template<typename T> struct TIsPointerType { enum { Value = std::is_pointer<T>::value }; };
 
 
 	/**
@@ -61,17 +64,17 @@ namespace VSEngine2
 	/**
 	* TIsPODType
 	*/
-	template<typename T> struct TIsPODType 
-	{ 
-		enum { Value = IS_POD(T)}; 
+	template<typename T> struct TIsPODType
+	{
+		enum { Value = IS_POD(T) };
 	};
 
 	/**
 	* TIsFundamentalType
 	*/
-	template<typename T> 
-	struct TIsFundamentalType 
-	{ 
+	template<typename T>
+	struct TIsFundamentalType
+	{
 		enum { Value = std::is_fundamental<T>::Value };
 	};
 
@@ -81,23 +84,23 @@ namespace VSEngine2
 		enum { NeedsDestructor = !HAS_TRIVIAL_DESTRUCTOR(T) && !TIsPODType<T>::Value };
 	};
 #else
-	#if _MSC_VER >= 1400
-	#define HAS_TRIVIAL_CONSTRUCTOR(T) __has_trivial_constructor(T)
-	#define HAS_TRIVIAL_DESTRUCTOR(T) __has_trivial_destructor(T)
-	#define HAS_TRIVIAL_ASSIGN(T) __has_trivial_assign(T)
-	#define HAS_TRIVIAL_COPY(T) __has_trivial_copy(T)
-	#define IS_POD(T) __is_pod(T)
-	#define IS_ENUM(T) __is_enum(T)
-	#define IS_EMPTY(T) __is_empty(T)
-	#else
-	#define HAS_TRIVIAL_CONSTRUCTOR(T) false
-	#define HAS_TRIVIAL_DESTRUCTOR(T) false
-	#define HAS_TRIVIAL_ASSIGN(T) false
-	#define HAS_TRIVIAL_COPY(T) false
-	#define IS_POD(T) false
-	#define IS_ENUM(T) false
-	#define IS_EMPTY(T) false
-	#endif
+#if _MSC_VER >= 1400
+#define HAS_TRIVIAL_CONSTRUCTOR(T) __has_trivial_constructor(T)
+#define HAS_TRIVIAL_DESTRUCTOR(T) __has_trivial_destructor(T)
+#define HAS_TRIVIAL_ASSIGN(T) __has_trivial_assign(T)
+#define HAS_TRIVIAL_COPY(T) __has_trivial_copy(T)
+#define IS_POD(T) __is_pod(T)
+#define IS_ENUM(T) __is_enum(T)
+#define IS_EMPTY(T) __is_empty(T)
+#else
+#define HAS_TRIVIAL_CONSTRUCTOR(T) false
+#define HAS_TRIVIAL_DESTRUCTOR(T) false
+#define HAS_TRIVIAL_ASSIGN(T) false
+#define HAS_TRIVIAL_COPY(T) false
+#define IS_POD(T) false
+#define IS_ENUM(T) false
+#define IS_EMPTY(T) false
+#endif
 
 
 	/*-----------------------------------------------------------------------------
@@ -143,21 +146,21 @@ namespace VSEngine2
 	/**
 	* TIsArithmeticType
 	*/
-	template<typename T> struct TIsArithmeticType 
-	{ 
-		enum { Value = TIsIntegralType<T>::Value || TIsFloatType<T>::Value } ;
+	template<typename T> struct TIsArithmeticType
+	{
+		enum { Value = TIsIntegralType<T>::Value || TIsFloatType<T>::Value };
 	};
 
 	/**
 	* TIsPointerType
 	* @todo - exclude member pointers
 	*/
-	template<typename T> struct TIsPointerType						{ enum { Value = false }; };
-	template<typename T> struct TIsPointerType<T*>					{ enum { Value = true }; };
-	template<typename T> struct TIsPointerType<const T*>			{ enum { Value = true }; };
-	template<typename T> struct TIsPointerType<const T* const>		{ enum { Value = true }; };
-	template<typename T> struct TIsPointerType<T* volatile>			{ enum { Value = true }; };
-	template<typename T> struct TIsPointerType<T* const volatile>	{ enum { Value = true }; };
+	template<typename T> struct TIsPointerType { enum { Value = false }; };
+	template<typename T> struct TIsPointerType<T*> { enum { Value = true }; };
+	template<typename T> struct TIsPointerType<const T*> { enum { Value = true }; };
+	template<typename T> struct TIsPointerType<const T* const> { enum { Value = true }; };
+	template<typename T> struct TIsPointerType<T* volatile> { enum { Value = true }; };
+	template<typename T> struct TIsPointerType<T* const volatile> { enum { Value = true }; };
 
 	/**
 	* TIsVoidType
@@ -172,17 +175,17 @@ namespace VSEngine2
 	* TIsPODType
 	* @todo - POD array and member pointer detection
 	*/
-	template<typename T> struct TIsPODType 
-	{ 
-		enum { Value = IS_POD(T) || IS_ENUM(T) || TIsArithmeticType<T>::Value || TIsPointerType<T>::Value }; 
+	template<typename T> struct TIsPODType
+	{
+		enum { Value = IS_POD(T) || IS_ENUM(T) || TIsArithmeticType<T>::Value || TIsPointerType<T>::Value };
 	};
 
 	/**
 	* TIsFundamentalType
 	*/
-	template<typename T> 
-	struct TIsFundamentalType 
-	{ 
+	template<typename T>
+	struct TIsFundamentalType
+	{
 		enum { Value = TIsArithmeticType<T>::Value || TIsVoidType<T>::Value };
 	};
 
@@ -201,40 +204,44 @@ namespace VSEngine2
 		enum { NeedsDestructor = !HAS_TRIVIAL_DESTRUCTOR(T) && !TIsPODType<T>::Value };
 	};
 #endif
-	template< class T > FORCEINLINE T Align( const T Ptr, unsigned int Alignment )
+	template< class T > FORCEINLINE T Align(const T Ptr, unsigned int Alignment)
 	{
-		return (T)(((unsigned int)Ptr + Alignment - 1) & ~(Alignment-1));
+		return (T)(((unsigned int)Ptr + Alignment - 1) & ~(Alignment - 1));
 
 	}
-	template< class T > FORCEINLINE T Align1( const T Ptr, unsigned int Alignment )
+
+	template< class T > FORCEINLINE T Align1(const T Ptr, unsigned int Alignment)
 	{
-		return (T)((unsigned int)Ptr + Alignment - (Ptr & (Alignment-1)));
+		return (T)((unsigned int)Ptr + Alignment - (Ptr & (Alignment - 1)));
 	}
+
 	class VSSYSTEM_API VSMemManager
 	{
 	public:
 		VSMemManager();
 		virtual ~VSMemManager() = 0;
-		virtual void* Allocate (unsigned int uiSize,unsigned int uiAlignment,bool bIsArray) = 0;
-		virtual void Deallocate (char* pcAddr, unsigned int uiAlignment,bool bIsArray) = 0;
-		
+		virtual void* Allocate(unsigned int uiSize, unsigned int uiAlignment, bool bIsArray) = 0;
+		virtual void Deallocate(char* pcAddr, unsigned int uiAlignment, bool bIsArray) = 0;
+
 	};
+
 	class VSSYSTEM_API VSCMem : public VSMemManager
 	{
 	public:
 		VSCMem();
 		~VSCMem();
-		void* Allocate (unsigned int uiSize,unsigned int uiAlignment,bool bIsArray);
-		void Deallocate (char* pcAddr, unsigned int uiAlignment,bool bIsArray);
+		void* Allocate(unsigned int uiSize, unsigned int uiAlignment, bool bIsArray);
+		void Deallocate(char* pcAddr, unsigned int uiAlignment, bool bIsArray);
 	};
+
 	class VSSYSTEM_API VSDebugMem : public VSMemManager
 	{
 	public:
 		VSDebugMem();
 		~VSDebugMem();
 
-		virtual void* Allocate (unsigned int uiSize,unsigned int uiAlignment,bool bIsArray);
-		virtual void Deallocate (char* pcAddr, unsigned int uiAlignment,bool bIsArray);
+		virtual void* Allocate(unsigned int uiSize, unsigned int uiAlignment, bool bIsArray);
+		virtual void Deallocate(char* pcAddr, unsigned int uiAlignment, bool bIsArray);
 
 	private:
 		enum
@@ -258,14 +265,17 @@ namespace VSEngine2
 				m_pPrev = NULL;
 				m_pNext = NULL;
 			}
-			void * pAddr[CALLSTACK_NUM];	//申请内存时候的调用堆栈信息
+
+			void* pAddr[CALLSTACK_NUM];	//申请内存时候的调用堆栈信息
+
 			unsigned int m_uiStackInfoNum;	//堆栈层数
 			unsigned int m_uiSize;			//申请空间的大小
 			bool m_bIsArray;				//是否是数组
 			bool m_bAlignment;				//是否字节对齐
-			Block * m_pPrev;				//前一个节点
-			Block * m_pNext;				//后一个节点
+			Block* m_pPrev;				//前一个节点
+			Block* m_pNext;				//后一个节点
 		};
+
 		unsigned int m_uiNumNewCalls;
 		unsigned int m_uiNumDeleteCalls;
 		Block* m_pHead;
@@ -275,9 +285,10 @@ namespace VSEngine2
 		unsigned int m_uiMaxNumBytes;
 		unsigned int m_uiMaxNumBlocks;
 		unsigned int m_uiSizeRecord[RECORD_NUM];
-		void InsertBlock (Block* pBlock);
-		void RemoveBlock (Block* pBlock);
-		bool GetFileAndLine(const void *pAddress, TCHAR szFile[MAX_PATH], int &line);
+
+		void InsertBlock(Block* pBlock);
+		void RemoveBlock(Block* pBlock);
+		bool GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_PATH], int& line);
 		bool InitDbgHelpLib();
 		void FreeDbgHelpLib();
 		void FreeLeakMem();
@@ -291,13 +302,13 @@ namespace VSEngine2
 	public:
 		VSMemWin32();
 		~VSMemWin32();
-		virtual void* Allocate (unsigned int uiSize,unsigned int uiAlignment,bool bIsArray);
-		virtual void Deallocate (char* pcAddr, unsigned int uiAlignment,bool bIsArray);
+		virtual void* Allocate(unsigned int uiSize, unsigned int uiAlignment, bool bIsArray);
+		virtual void Deallocate(char* pcAddr, unsigned int uiAlignment, bool bIsArray);
 	private:
 		static VSCriticalSection ms_MemLock;
 		// Counts.
-		enum {POOL_COUNT = 42     };
-		enum {POOL_MAX   = 32768+1};
+		enum { POOL_COUNT = 42 };
+		enum { POOL_MAX = 32768 + 1 };
 
 		// Forward declares.
 		struct FFreeMem;
@@ -309,25 +320,25 @@ namespace VSEngine2
 			DWORD	    Bytes;		// Bytes allocated for pool.
 			DWORD		OsBytes;	// Bytes aligned to page size.
 			DWORD       Taken;      // Number of allocated elements in this pool, when counts down to zero can free the entire pool.
-			BYTE*       Mem;		// Memory base.
+			BYTE* Mem;		// Memory base.
 			FPoolTable* Table;		// Index of pool.
-			FFreeMem*   FirstMem;   // Pointer to first free memory in this pool.
-			FPoolInfo*	Next;
-			FPoolInfo**	PrevLink;
+			FFreeMem* FirstMem;   // Pointer to first free memory in this pool.
+			FPoolInfo* Next;
+			FPoolInfo** PrevLink;
 
-			void Link( FPoolInfo*& Before )
+			void Link(FPoolInfo*& Before)
 			{
-				if( Before )
+				if (Before)
 				{
 					Before->PrevLink = &Next;
 				}
-				Next     = Before;
+				Next = Before;
 				PrevLink = &Before;
-				Before   = this;
+				Before = this;
 			}
 			void Unlink()
 			{
-				if( Next )
+				if (Next)
 				{
 					Next->PrevLink = PrevLink;
 				}
@@ -338,7 +349,7 @@ namespace VSEngine2
 		// Information about a piece of free memory. 8 bytes.
 		struct FFreeMem
 		{
-			FFreeMem*	Next;		// Next or MemLastPool[], always in order by pool.
+			FFreeMem* Next;		// Next or MemLastPool[], always in order by pool.
 			DWORD		Blocks;		// Number of consecutive free blocks here, at least 1.
 			FPoolInfo* GetPool();
 		};
@@ -353,20 +364,21 @@ namespace VSEngine2
 
 
 		FPoolTable  PoolTable[POOL_COUNT], OsTable;
-		FPoolInfo*	PoolIndirect[32];
+		FPoolInfo* PoolIndirect[32];
 		FPoolTable* MemSizeToPoolTable[POOL_MAX];
 		INT			PageSize;
 
 		FPoolInfo* CreateIndirect()
 		{
-			FPoolInfo* Indirect = (FPoolInfo*)VirtualAlloc( NULL, 2048*sizeof(FPoolInfo), MEM_COMMIT, PAGE_READWRITE );
-			if( !Indirect )
+			FPoolInfo* Indirect = (FPoolInfo*)VirtualAlloc(NULL, 2048 * sizeof(FPoolInfo), MEM_COMMIT, PAGE_READWRITE);
+			if (!Indirect)
 			{
 				return NULL;
 			}
 			return Indirect;
 		}
 	};
+
 	// this is Stack Mem ,it will be clear every tick ,now No considering thread safe .
 	// this code is modified by u3
 	class VSSYSTEM_API VSStackMem : public VSMemManager
@@ -374,14 +386,14 @@ namespace VSEngine2
 	public:
 		VSStackMem(unsigned int uiDefaultChunkSize = 65536);
 		~VSStackMem();
-		void* Allocate (unsigned int uiSize,unsigned int uiAlignment,bool bIsArray);
-		void Deallocate (char* pcAddr, unsigned int uiAlignment,bool bIsArray)
+		void* Allocate(unsigned int uiSize, unsigned int uiAlignment, bool bIsArray);
+		void Deallocate(char* pcAddr, unsigned int uiAlignment, bool bIsArray)
 		{
 			return;
 		}
 		template<class T>
 		friend class VSStackMemAlloc;
-		
+
 		//每帧结束或者开始的时候调用
 		void Clear();
 	private:
@@ -395,13 +407,13 @@ namespace VSEngine2
 		};
 
 		// Variables.
-		BYTE*			Top;				// Top of current chunk (Top<=End).
-		BYTE*			End;				// End of current chunk.
+		BYTE* Top;				// Top of current chunk (Top<=End).
+		BYTE* End;				// End of current chunk.
 		unsigned int	DefaultChunkSize;	// Maximum chunk size to allocate.
-		FTaggedMemory*	TopChunk;			// Only chunks 0..ActiveChunks-1 are valid.
+		FTaggedMemory* TopChunk;			// Only chunks 0..ActiveChunks-1 are valid.
 
 		/** The memory chunks that have been allocated but are currently unused. */
-		FTaggedMemory*	UnusedChunks;
+		FTaggedMemory* UnusedChunks;
 
 		/** The number of marks on this stack. */
 		INT NumMarks;
@@ -411,11 +423,11 @@ namespace VSEngine2
 		* and return it aligned to Align. Updates the memory stack's
 		* Chunks table and ActiveChunks counter.
 		*/
-		BYTE* AllocateNewChunk( INT MinSize );
+		BYTE* AllocateNewChunk(INT MinSize);
 
 		/** Frees the chunks above the specified chunk on the stack. */
 		/*移除这个chunk和这个chunk之前的所有chunk*/
-		void FreeChunks( FTaggedMemory* NewTopChunk );
+		void FreeChunks(FTaggedMemory* NewTopChunk);
 	};
 
 	// if the class has memory alloc , you must inherit from VSMemObject , so you can use the MemManger any where 
@@ -435,20 +447,20 @@ namespace VSEngine2
 	{
 	public:
 		// Constructors.
-		VSStackMemAlloc(unsigned int uiNum = 0,unsigned int uiAlignment = 0)
+		VSStackMemAlloc(unsigned int uiNum = 0, unsigned int uiAlignment = 0)
 		{
 			m_uiNum = uiNum;
 			Top = GetStackMemManager().Top;
-			SavedChunk = GetStackMemManager().TopChunk;		
+			SavedChunk = GetStackMemManager().TopChunk;
 			// Track the number of outstanding marks on the stack.
 			GetStackMemManager().NumMarks++;
 			if (m_uiNum > 0)
 			{
-				m_pPtr = (T *)GetStackMemManager().Allocate(uiNum * sizeof(T),uiAlignment,0);
+				m_pPtr = (T*)GetStackMemManager().Allocate(uiNum * sizeof(T), uiAlignment, 0);
 				VSMAC_ASSERT(m_pPtr);
 				if (ValueBase<T>::NeedsConstructor)
 				{
-					for (unsigned int i = 0 ; i < uiNum ; i++)
+					for (unsigned int i = 0; i < uiNum; i++)
 					{
 						VS_NEW(m_pPtr + i)T();
 					}
@@ -464,7 +476,7 @@ namespace VSEngine2
 			{
 				if (ValueBase<T>::NeedsDestructor)
 				{
-					for (unsigned int i = 0 ; i < m_uiNum ; i++)
+					for (unsigned int i = 0; i < m_uiNum; i++)
 					{
 						(m_pPtr + i)->~T();
 					}
@@ -474,8 +486,8 @@ namespace VSEngine2
 			--GetStackMemManager().NumMarks;
 
 			// Unlock any new chunks that were allocated.
-			if( SavedChunk != GetStackMemManager().TopChunk )
-				GetStackMemManager().FreeChunks( SavedChunk );
+			if (SavedChunk != GetStackMemManager().TopChunk)
+				GetStackMemManager().FreeChunks(SavedChunk);
 
 			// Restore the memory stack's state.
 			GetStackMemManager().Top = Top;
@@ -484,20 +496,23 @@ namespace VSEngine2
 			Top = NULL;
 		}
 
-		FORCEINLINE T * GetPtr()const
+		FORCEINLINE T* GetPtr()const
 		{
 			return m_pPtr;
 		}
+
 		FORCEINLINE unsigned int GetNum() const
 		{
 			return m_uiNum;
 		}
+
 	private:
 		BYTE* Top;
 		VSStackMem::FTaggedMemory* SavedChunk;
-		T * m_pPtr;
+		T* m_pPtr;
 		unsigned int m_uiNum;
 	};
+
 	// 	class VSMemManagerSF
 	// 	{
 	// 	public:
@@ -532,9 +547,9 @@ namespace VSEngine2
 	// 		static BlockHeader * ms_pFreeList;
 	// 
 	// 	};
-	
-	
-	
+
+
+
 }
 
 #define USE_CUSTOM_NEW
@@ -542,20 +557,22 @@ namespace VSEngine2
 #ifdef USE_CUSTOM_NEW
 FORCEINLINE void* operator new(size_t uiSize)
 {
-	return VSEngine2::VSMemObject::GetMemManager().Allocate((unsigned int)uiSize,0,false);
+	return VSEngine2::VSMemObject::GetMemManager().Allocate((unsigned int)uiSize, 0, false);
 }
-FORCEINLINE void* operator new[] (size_t uiSize)
+
+FORCEINLINE void* operator new[](size_t uiSize)
 {
-	return VSEngine2::VSMemObject::GetMemManager().Allocate((unsigned int)uiSize,0,true);
+	return VSEngine2::VSMemObject::GetMemManager().Allocate((unsigned int)uiSize, 0, true);
 }
 
 FORCEINLINE void operator delete (void* pvAddr)
 {
-	return VSEngine2::VSMemObject::GetMemManager().Deallocate((char *)pvAddr,0,false);
+	return VSEngine2::VSMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, false);
 }
-FORCEINLINE void operator delete[] (void* pvAddr)
+
+FORCEINLINE void operator delete[](void* pvAddr)
 {
-	return VSEngine2::VSMemObject::GetMemManager().Deallocate((char *)pvAddr,0,true);
+	return VSEngine2::VSMemObject::GetMemManager().Deallocate((char*)pvAddr, 0, true);
 }
 #endif
 
@@ -563,20 +580,35 @@ FORCEINLINE void operator delete[] (void* pvAddr)
 #define VSMAC_DELETE(p) if(p){VS_DELETE p; p = 0;}
 #define VSMAC_DELETEA(p) if(p){VS_DELETE []p; p = 0;}
 #define VSMAC_DELETEAB(p,num) if(p){ for(int i = 0 ; i < num ; i++) VSMAC_DELETEA(p[i]); VSMAC_DELETEA(p);}
-// use by inner mac
-template<typename T>
-FORCEINLINE void VSDelete(T * p)
+	// use by inner mac
+	template<typename T>
+FORCEINLINE void VSDelete(T* p)
 {
-	if (p){ VS_DELETE p; p = 0; }
+	if (p)
+	{
+		VS_DELETE p;
+		p = 0;
+	}
 }
+
 template<typename T>
-FORCEINLINE void VSDeleteA(T * p)
+FORCEINLINE void VSDeleteA(T* p)
 {
-	if (p){ VS_DELETE[]p; p = 0; }
+	if (p)
+	{
+		VS_DELETE[]p;
+		p = 0;
+	}
 }
-template<typename T,typename N>
-FORCEINLINE void VSDeleteAB(T * p,N num)
+
+template<typename T, typename N>
+FORCEINLINE void VSDeleteAB(T* p, N num)
 {
-	if (p){ for (int i = 0; i < num; i++) VSMAC_DELETEA(p[i]); VSMAC_DELETEA(p); }
+	if (p)
+	{
+		for (int i = 0; i < num; i++)
+			VSMAC_DELETEA(p[i]);
+		VSMAC_DELETEA(p);
+	}
 }
 #endif

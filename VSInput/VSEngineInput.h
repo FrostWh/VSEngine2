@@ -1,11 +1,14 @@
 #ifndef VSENGINEINPUT_H
 #define VSENGINEINPUT_H
+
 #include "VSSystem.h"
+
 #ifdef VSINPUT_EXPORTS
 #define  VSINPUT_API __declspec(dllexport) 
 #else
 #define  VSINPUT_API __declspec(dllimport)
 #endif
+
 namespace VSEngine2
 {
 	typedef void (* InputMsgProc)(unsigned int uiInputType,unsigned int uiEvent,unsigned int uiKey,int x, int y, int z);

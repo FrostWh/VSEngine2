@@ -7,37 +7,37 @@
 namespace VSEngine2
 {
 
-template <typename T> 
-class  VSSingleton
-{
-	static T *m_pSingleton;
-
-public:
-	VSSingleton()
+	template <typename T>
+	class  VSSingleton
 	{
-		VSMAC_ASSERT( !m_pSingleton );
-		m_pSingleton = static_cast<T*>(this);
-	}
+		static T* m_pSingleton;
 
-	~VSSingleton()
-	{
-		VSMAC_ASSERT( m_pSingleton );
-		m_pSingleton = NULL;
-	}
+	public:
+		VSSingleton()
+		{
+			VSMAC_ASSERT(!m_pSingleton);
+			m_pSingleton = static_cast<T*>(this);
+		}
 
-	static T &GetSingleton()
-	{ 
-		VSMAC_ASSERT( m_pSingleton );
-		return (*m_pSingleton); 
-	}
+		~VSSingleton()
+		{
+			VSMAC_ASSERT(m_pSingleton);
+			m_pSingleton = NULL;
+		}
 
-	static T *GetSingletonPtr()
-	{ 
-		return (m_pSingleton);
-	}
-};
+		static T& GetSingleton()
+		{
+			VSMAC_ASSERT(m_pSingleton);
+			return (*m_pSingleton);
+		}
 
-template <typename T> T *VSSingleton<T>::m_pSingleton = NULL;
+		static T* GetSingletonPtr()
+		{
+			return (m_pSingleton);
+		}
+	};
+
+	template <typename T> T* VSSingleton<T>::m_pSingleton = NULL;
 
 }
 

@@ -1,7 +1,10 @@
 #include "VSTimer.h"
 #include <MMSystem.h>
+
 using namespace VSEngine2;
+
 VSTimer * VSTimer::ms_pTimer = NULL;
+
 VSTimer::VSTimer()
 {
 	InitGameTime();
@@ -22,9 +25,10 @@ void VSTimer::InitGameTime()
 	m_fTimeSlice = 0;
 	m_fLastTime = 0;
 	m_fDetTime = 0;
+
 	if(QueryPerformanceFrequency((LARGE_INTEGER*) &m_int64OneSecondTicks))
 	{
-		m_bUseLargeTime=true;
+		m_bUseLargeTime = true;
 		QueryPerformanceCounter((LARGE_INTEGER*) &m_int64TimeTickStartCounts);
 	}
 	else
@@ -33,10 +37,12 @@ void VSTimer::InitGameTime()
 		m_ulTimeStart = timeGetTime();
 	}
 }
+
 int VSTimer::GetRandSeed()
 {
 	return ((LARGE_INTEGER*)&m_int64TimeTickStartCounts)->LowPart;
 }
+
 double VSTimer::GetGamePlayTime()
 {  //返回已进行的时间,单位毫秒
 	__int64 int64TimeCurrentCounts;
