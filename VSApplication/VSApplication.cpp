@@ -11,14 +11,10 @@
 #include "VSProfiler.h"
 #include "VSNullRenderer.h"
 #include "VSDx11Renderer.h"
-#include "VSDx12Renderer.h"
-
 #ifdef WINDOWS
 #include <WINDOWSX.H>
 #endif
-
 using namespace VSEngine2;
-
 #ifdef WINDOWS
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, 
 				   LPSTR lpCmdLine, int nCmdShow) 
@@ -26,7 +22,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance,
 	VSInitSystem();
 	VSInitMath();
 	VSMain::Initialize();
-
 	if (VSApplication::ms_pApplication)
 	{
 		if (!VSApplication::ms_pApplication->Main(hInst,lpCmdLine,nCmdShow))
@@ -39,13 +34,11 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance,
 
 	return 1;
 }
-
 int  main(int argc, char* argv[])
 {
 	VSInitSystem();
 	VSInitMath();
 	VSMain::Initialize();
-
 	if (VSApplication::ms_pApplication)
 	{
 		if (!VSApplication::ms_pApplication->Main(argc, argv))
@@ -58,21 +51,16 @@ int  main(int argc, char* argv[])
 
 	return 1;
 }
-
 #endif
-
 DECLEAR_ONLYTIME_PROFILENODE(FPS,)
 DECLEAR_TIME_PROFILENODE(ApplicationUpdate,)
 DECLEAR_TIME_PROFILENODE(Update, ApplicationUpdate)
-
 VSApplication *VSApplication::ms_pApplication = NULL;
-
 VSApplication::VSApplication()
 {
 
 	m_iUpdateThreadNum = 0;
 }
-
 VSApplication::~VSApplication()
 {
 
@@ -82,7 +70,6 @@ bool VSApplication::CreateRenderer()
 {
 	return true;
 }
-
 bool VSApplication::CreateTimer()
 {
 	if (!VSTimer::ms_pTimer)
@@ -96,7 +83,6 @@ bool VSApplication::CreateTimer()
 	VSRandInit(VSTimer::ms_pTimer->GetRandSeed());
 	return true;
 }
-
 bool VSApplication::CreateSceneManager()
 {
 	if (!VSSceneManager::ms_pSceneManager)
@@ -109,7 +95,6 @@ bool VSApplication::CreateSceneManager()
 	}
 	return true;
 }
-
 bool VSApplication::CreateWorld()
 {
 	if (!VSWorld::ms_pWorld)
@@ -122,12 +107,10 @@ bool VSApplication::CreateWorld()
 	}
 	return true;
 }
-
 bool VSApplication::CreateMonitor()
 {
 	return true;
 }
-
 bool VSApplication::CreateASYNLoader()
 {
 	if(!VSASYNLoadManager::ms_pASYNLoadManager)
@@ -140,7 +123,6 @@ bool VSApplication::CreateASYNLoader()
 	}
 	return true;
 }
-
 bool VSApplication::CreateUpdateThread()
 {
 	if (!VSResourceManager::ms_bUpdateThread || !m_iUpdateThreadNum)
@@ -157,7 +139,6 @@ bool VSApplication::CreateUpdateThread()
 	}
 	return true;
 }
-
 bool VSApplication::CreateRenderThread()
 {
 	if (!VSResourceManager::ms_bRenderThread)
@@ -174,49 +155,41 @@ bool VSApplication::CreateRenderThread()
 	}
 	return true;
 }
-
 bool VSApplication::CreateInput()
 {
 	
 	return true;
 }
-
 bool VSApplication::ReleaseRenderer()
 {
 	VSMAC_DELETE(VSRenderer::ms_pRenderer);
 	return true;
 }
-
 bool VSApplication::ReleaseInput()
 {
 	VSMAC_DELETE(VSEngineInput::ms_pInput);
 	return true;
 }
-
 bool VSApplication::ReleaseTimer()
 {
 	VSMAC_DELETE(VSTimer::ms_pTimer);
 	return true;
 }
-
 bool VSApplication::ReleaseSceneManager()
 {
 	VSMAC_DELETE(VSSceneManager::ms_pSceneManager);
 	return true;
 }
-
 bool VSApplication::ReleaseWorld()
 {
 	VSMAC_DELETE(VSWorld::ms_pWorld);
 	return true;
 }
-
 bool VSApplication::ReleaseASYNLoader()
 {
 	VSMAC_DELETE(VSASYNLoadManager::ms_pASYNLoadManager);
 	return true;
 }
-
 bool VSApplication::ReleaseRenderThread()
 {
 	if (!VSResourceManager::ms_bRenderThread)
@@ -226,7 +199,6 @@ bool VSApplication::ReleaseRenderThread()
 	VSMAC_DELETE(VSRenderThreadSys::ms_pRenderThreadSys);
 	return true;
 }
-
 bool VSApplication::ReleaseUpdateThread()
 {
 	if (!VSResourceManager::ms_bUpdateThread)
@@ -236,12 +208,10 @@ bool VSApplication::ReleaseUpdateThread()
 	VSMAC_DELETE(VSUpdateThreadSys::ms_pUpdateThreadSys);
 	return true;
 }
-
 bool VSApplication::ReleaseMonitor()
 {
 	return true;
 }
-
 bool VSApplication::Run()
 {
 	double fTime = 0.0f;
@@ -249,7 +219,6 @@ bool VSApplication::Run()
 	double DetTime = 0.0f;
 	ADD_TIME_PROFILE(ApplicationUpdate)
 	GetStackMemManager().Clear();
-
 	if (VSTimer::ms_pTimer)
 	{
 		VSTimer::ms_pTimer->UpdateFPS();
@@ -257,7 +226,6 @@ bool VSApplication::Run()
 		fFPS = VSTimer::ms_pTimer->GetFPS();
 		ADD_ONLYTIME_PROFILE(FPS,fFPS)
 	}
-
 	if (VSRenderer::ms_pRenderer)
 	{
 
@@ -267,7 +235,6 @@ bool VSApplication::Run()
 			{
 				VSRenderThreadSys::ms_pRenderThreadSys->Begin();
 			}
-
 			{
 				ADD_TIME_PROFILE(Update)
 				if (VSEngineInput::ms_pInput)
@@ -298,9 +265,7 @@ bool VSApplication::Run()
 				{
 					VSWorld::ms_pWorld->Update(fTime);
 				}
-
 				PostUpdate();
-
 				VSRenderer::ms_pRenderer->BeginRendering();
 
 				if (VSSceneManager::ms_pSceneManager)
@@ -312,12 +277,10 @@ bool VSApplication::Run()
 				{
 					return false;
 				}
-
 				VSProfiler::Draw();
 				VSRenderer::ms_pRenderer->EndRendering();
 		
 			}
-
 			if (VSRenderThreadSys::ms_pRenderThreadSys && VSResourceManager::ms_bRenderThread)
 			{
 				VSRenderThreadSys::ms_pRenderThreadSys->ExChange();
@@ -337,7 +300,6 @@ bool VSApplication::Run()
 	}
 	return true;
 }
-
 bool VSApplication::CreateEngine()
 {
 	if (!CreateMonitor())
@@ -374,7 +336,6 @@ bool VSApplication::CreateEngine()
 	}
 	return true;
 }
-
 bool VSApplication::ReleaseEngine()
 {
 	if (!ReleaseWorld())
@@ -409,43 +370,35 @@ bool VSApplication::ReleaseEngine()
 	}
 	return true;
 }
-
 bool VSApplication::Main(HINSTANCE hInst, LPSTR lpCmdLine, int nCmdShow)
 {
 	return false;
 }
-
 bool VSApplication::Main(int argc, char* argv[])
 {
 	return false;
 }
-
 bool VSApplication::OnTerminal()
 {
 	return true;
 }
-
 bool VSApplication::PostUpdate()
 {
 	return true;
 }
-
 bool VSApplication::PreUpdate()
 {
 	return true;
 }
-
 bool VSApplication::OnDraw()
 {
 	return true;
 }
-
 bool VSApplication::OnInitial()
 {
 	VSProfiler::ClearAll();
 	return true;
 }
-
 bool VSApplication::PreInitial()
 {
 
@@ -484,12 +437,10 @@ bool VSApplication::PreInitial()
 	}
 	return true;
 }
-
 bool VSApplication::CreateAppWindow()
 {	
 	return true;
 }
-
 void VSApplication::ChangeScreenSize(unsigned int uiWidth,unsigned int uiHeight,bool bWindow,bool IsMaxScreen)
 {
 	if (VSRenderThreadSys::ms_pRenderThreadSys)
@@ -503,67 +454,54 @@ void VSApplication::ChangeScreenSize(unsigned int uiWidth,unsigned int uiHeight,
 		m_uiScreenHeight = uiHeight;
 	}
 }
-
 void VSApplication::OnMove(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnReSize(int iWidth,int iHeight)
 {
 
 }
-
 void VSApplication::OnKeyDown(unsigned int uiKey)
 {
 
 }
-
 void VSApplication::OnKeyUp(unsigned int uiKey)
 {
 
 }
-
 void VSApplication::OnLButtonDown(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnLButtonUp(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnRButtonDown(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnRButtonUp(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnMButtonDown(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnMButtonUp(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnMouseMove(int xPos,int yPos)
 {
 
 }
-
 void VSApplication::OnMouseWheel(int xPos,int yPos,int zDet)
 {
 
 }
-
 #ifdef WINDOWS
 DWORD VSWindowApplication::ms_WinodwKeyToVS[] =
 {
@@ -794,19 +732,16 @@ DWORD VSWindowApplication::ms_WinodwKeyToVS[] =
 
 
 };
-
 VSWindowApplication::VSWindowApplication()
 {
 	m_hInst = NULL;
 	m_MainHwnd = NULL;
 
 }
-
 VSWindowApplication::~VSWindowApplication()
 {
 
 }
-
 bool VSWindowApplication::CreateDx9()
 {
 	if (VSRenderer::ms_pRenderer)
@@ -841,12 +776,10 @@ bool VSWindowApplication::CreateDx9()
 	return true;
 
 }
-
 bool VSWindowApplication::CreateDx10()
 {
 	return false;
 }
-
 bool VSWindowApplication::CreateDx11()
 {
 	if (VSRenderer::ms_pRenderer)
@@ -880,46 +813,10 @@ bool VSWindowApplication::CreateDx11()
 
 	return false;
 }
-
-bool VSEngine2::VSWindowApplication::CreateDx12()
-{
-	if (VSRenderer::ms_pRenderer)
-	{
-		if (VSRenderer::ms_pRenderer->GetRendererType() == VSRenderer::RAT_DIRECTX12)
-		{
-			return true;
-		}
-		else
-		{
-			VSMAC_DELETE(VSRenderer::ms_pRenderer);
-			VSDX12Renderer * pRenderer =
-				VS_NEW VSDX12Renderer(m_MainHwnd, m_uiScreenWidth, m_uiScreenHeight,
-				m_bIsWindowed, m_uiAnisotropy, m_uiMultisample, m_ArrayChildHwnd.GetBuffer(), m_ArrayChildHwnd.GetNum());
-			if (VSRenderer::ms_pRenderer)
-			{
-				return true;
-			}
-		}
-	}
-	else
-	{
-		VSDX12Renderer * pRenderer =
-			VS_NEW VSDX12Renderer(m_MainHwnd, m_uiScreenWidth, m_uiScreenHeight,
-			m_bIsWindowed, m_uiAnisotropy, m_uiMultisample, m_ArrayChildHwnd.GetBuffer(), m_ArrayChildHwnd.GetNum());
-		if (VSRenderer::ms_pRenderer)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
 bool VSWindowApplication::CreateOPGL()
 {
 	return false;
 }
-
 bool VSWindowApplication::CreateRenderer()
 {
 	VSApplication::CreateRenderer();
@@ -939,16 +836,11 @@ bool VSWindowApplication::CreateRenderer()
 	{
 		return CreateDx11();
 	}
-	else if (m_uiRenderAPIType == VSRenderer::RAT_DIRECTX12)
-	{
-		return CreateDx12();
-	}
 	else
 	{
 		return false;
 	}
 }
-
 bool VSWindowApplication::CreateInput()
 {
 	if (VSEngineInput::ms_pInput)
@@ -986,7 +878,6 @@ bool VSWindowApplication::CreateInput()
 
 	return true;
 }
-
 bool VSWindowApplication::Main(HINSTANCE hInst, LPSTR lpCmdLine, int nCmdShow)
 {
 	m_pCommand = VS_NEW VSCommand(lpCmdLine);
@@ -1060,12 +951,10 @@ bool VSWindowApplication::Main(HINSTANCE hInst, LPSTR lpCmdLine, int nCmdShow)
 	UnregisterClass(m_WindowClassName.GetBuffer(), m_hInst);
 	return !bError;
 }
-
 bool VSWindowApplication::PreInitial()
 {
 	VSApplication::PreInitial();
-	m_uiRenderAPIType = VSRenderer::RAT_DIRECTX12;
-	//m_uiRenderAPIType = VSRenderer::RAT_DIRECTX11;
+	m_uiRenderAPIType = VSRenderer::RAT_DIRECTX11;
 	m_uiScreenWidth = 1024;
 	m_uiScreenHeight = 768;
 	m_bIsWindowed = true;
@@ -1079,7 +968,6 @@ bool VSWindowApplication::PreInitial()
 	
 	return true;
 }
-
 bool VSWindowApplication::CreateAppWindow()
 {
 	WNDCLASSEX	wndclass;
@@ -1134,7 +1022,6 @@ bool VSWindowApplication::CreateAppWindow()
 
 	return true;
 }
-
 void VSWindowApplication::ChangeScreenSize(unsigned int uiWidth, unsigned int uiHeight, bool bWindow, bool IsMaxScreen)
 {
 	VSApplication::ChangeScreenSize(uiWidth, uiHeight, bWindow, IsMaxScreen);
@@ -1174,7 +1061,6 @@ void VSWindowApplication::ChangeScreenSize(unsigned int uiWidth, unsigned int ui
 
 
 }
-
 void VSApplication::InputMsgProc(unsigned int uiInputType, unsigned int uiEvent, unsigned int uiKey, int x, int y, int z)
 {
 	if (uiInputType == VSEngineInput::IT_KEYBOARD)
@@ -1235,7 +1121,6 @@ void VSApplication::InputMsgProc(unsigned int uiInputType, unsigned int uiEvent,
 		VSWorld::ms_pWorld->ProcessInput(uiInputType, uiEvent, uiKey, x, y, z);
 	}
 }
-
 unsigned int VSWindowApplication::CheckVirtualKeyDown(unsigned int VK)
 {
 	if (GetKeyState(VK_LSHIFT) < 0)
@@ -1260,7 +1145,6 @@ unsigned int VSWindowApplication::CheckVirtualKeyDown(unsigned int VK)
 	}
 
 }
-
 unsigned int VSWindowApplication::CheckVirtualKeyUp(unsigned int VK)
 {
 	if (GetKeyState(VK_LSHIFT) > 0)
@@ -1284,7 +1168,6 @@ unsigned int VSWindowApplication::CheckVirtualKeyUp(unsigned int VK)
 		return 0;
 	}
 }
-
 LRESULT WINAPI VSWindowApplication::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (!VSWindowApplication::ms_pApplication)
@@ -1453,7 +1336,6 @@ LRESULT WINAPI VSWindowApplication::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, 
 
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
-
 bool VSWindowApplication::CreateMonitor()
 {
 	if (!VSResourceMonitor::ms_pResourceMonitor)
@@ -1467,7 +1349,6 @@ bool VSWindowApplication::CreateMonitor()
 	}
 	return true;
 }
-
 bool VSWindowApplication::ReleaseMonitor()
 {
 
@@ -1477,14 +1358,13 @@ bool VSWindowApplication::ReleaseMonitor()
 }
 
 
+
 VSConsoleApplication::VSConsoleApplication()
 {
 }
-
 VSConsoleApplication::~VSConsoleApplication()
 {
 }
-
 bool VSConsoleApplication::CreateRenderer()
 {
 	VSApplication::CreateRenderer();
@@ -1499,12 +1379,10 @@ bool VSConsoleApplication::CreateRenderer()
 
 	return true;
 }
-
 bool VSConsoleApplication::CreateInput()
 {
 	return true;
 }
-
 bool VSConsoleApplication::Main(int argc, char* argv[])
 {
 	m_pCommand = VS_NEW VSCommand(argc, argv);
@@ -1562,20 +1440,17 @@ bool VSConsoleApplication::Main(int argc, char* argv[])
 	VSMAC_DELETE(m_pCommand);
 	return !bError;
 }
-
 bool VSConsoleApplication::PreInitial()
 {
 	VSApplication::PreInitial();
 
 	return true;
 }
-
 bool VSConsoleApplication::CreateAppWindow()
 {
 	
 	return true;
 }
-
 void VSConsoleApplication::ChangeScreenSize(unsigned int uiWidth, unsigned int uiHeight, bool bWindow, bool IsMaxScreen)
 {
 	VSApplication::ChangeScreenSize(uiWidth, uiHeight, bWindow, IsMaxScreen);

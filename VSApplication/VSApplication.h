@@ -1,6 +1,5 @@
 #ifndef  VSAPPLICATION_H
 #define  VSAPPLICATION_H
-
 #include "VSSystem.h"
 #include "VSMain.h"
 #include "VSMath.h"
@@ -8,7 +7,6 @@
 #include "VSCommand.h"
 #include "VSRenderer.h"
 #include "VSGraphicInclude.h"
-
 namespace VSEngine2
 {
 //-------------------------------------------------------
@@ -100,7 +98,6 @@ namespace VSEngine2
 		
 		virtual  bool CreateEngine();
 		virtual  bool ReleaseEngine();
-
 	public:
 		virtual bool Main(HINSTANCE hInst,LPSTR lpCmdLine, int nCmdShow);
 		virtual bool Main(int argc, char* argv[]);
@@ -128,14 +125,12 @@ namespace VSEngine2
 		bool m_bIsActive;
 		bool m_bIsRunning;
 	};
-
 #ifdef WINDOWS
 	class VSWindowApplication : public VSApplication
 	{
 	public:
 		VSWindowApplication();
 		virtual ~VSWindowApplication();
-
 	protected:
 		virtual bool CreateRenderer();
 		virtual bool CreateInput();
@@ -147,7 +142,6 @@ namespace VSEngine2
 		virtual bool CreateDx9();
 		virtual bool CreateDx10();
 		virtual bool CreateDx11();
-		virtual bool CreateDx12();
 		virtual bool CreateOPGL();
 		virtual bool CreateAppWindow();
 
@@ -164,11 +158,10 @@ namespace VSEngine2
 
 		DWORD m_dwWindowedStyle;
 		DWORD m_dwFullscreenStyle;
-		bool	m_bIsWindowed;
+		bool		m_bIsWindowed;
 		HWND	m_MainHwnd;
 		VSArray<VSRenderer::ChildWindowInfo>	m_ArrayChildHwnd;
 		HINSTANCE m_hInst;
-
 	public:
 		virtual bool Main(HINSTANCE hInst, LPSTR lpCmdLine, int nCmdShow);
 		virtual bool PreInitial();
@@ -176,13 +169,11 @@ namespace VSEngine2
 		unsigned int CheckVirtualKeyDown(unsigned int VK);
 		unsigned int CheckVirtualKeyUp(unsigned int VK);
 	};
-
 	class VSConsoleApplication : public VSApplication
 	{
 	public:
 		VSConsoleApplication();
 		virtual ~VSConsoleApplication();
-
 	protected:
 		virtual bool CreateRenderer();
 		virtual bool CreateInput();

@@ -10,9 +10,7 @@
 #include "VSViewFamily.h"
 #include "VSTimer.h"
 #include "VSSkelectonActor.h"
-
 using namespace VSEngine2;
-
 class VSDemoWindowsApplication : public VSWindowApplication
 {
 
@@ -52,23 +50,18 @@ protected:
 		RENDER_NUM = 20
 	};
 };
-
 IMPLEMENT_APPLICATION(VSDemoWindowsApplication);
-
 VSDemoWindowsApplication::VSDemoWindowsApplication()
 {
 
 }
-
 VSDemoWindowsApplication::~VSDemoWindowsApplication()
 {
 
 }
-
 bool VSDemoWindowsApplication::PreInitial()
 {
 	VSWindowApplication::PreInitial();
-
 	m_uiInputAPIType = VSEngineInput::IAT_WINDOWS;
 	//m_uiInputAPIType = VSEngineInput::IAT_DX;
 	VSResourceManager::ms_bUpdateThread = false;
@@ -79,10 +72,8 @@ bool VSDemoWindowsApplication::PreInitial()
 	m_iDetMouseY = 0;
 	m_iLastMouseX = 0;
 	m_iLastMouseY = 0;
-
 	return true;
 }
-
 bool VSDemoWindowsApplication::OnInitial()
 {
 	VSWindowApplication::OnInitial();

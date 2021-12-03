@@ -1,6 +1,5 @@
 #ifndef VSTHREAD_H
 #define VSTHREAD_H
-
 //------------------------------------------------------------------------------
 /**
 @class	MAY::VSThread
@@ -11,7 +10,6 @@
 */
 #include "VSSystem.h"
 #include "VSSynchronize.h"
-
 namespace VSEngine2
 {
 
@@ -25,24 +23,22 @@ namespace VSEngine2
 			Normal,
 			High,
 		};
-
 		enum ThreadState
 		{
 			TS_START,
 			TS_SUSPEND,
 			TS_STOP,
 		};
-
 	public:
 		VSThread();
 		virtual ~VSThread();
-
+		
 		void SetPriority(Priority p);
-
+		
 		Priority GetPriority() const;
-
+		
 		void SetStackSize(unsigned int uiSize);
-
+		
 		unsigned int GetStackSize() const;
 
 
@@ -55,27 +51,22 @@ namespace VSEngine2
 
 		bool IsStopTrigger();
 		void Stop();
-
 	public:
-
+		
 		static void SetThreadName(const char* name);
 		FORCEINLINE ThreadState GetThreadState()
 		{
 			return m_ThreadState;
 		}
-
 	protected:
 		virtual void Run() = 0;
 		virtual const TCHAR* GetThreadName();
-
 	private:
 		static DWORD THREAD_CALLBACK ThreadProc(void* t);
-
 	private:
 		void* m_hThread;
 		Priority m_priority;
 		unsigned int m_stackSize;
-
 	protected:
 		ThreadState m_ThreadState;
 		VSEvent m_StopEvent;

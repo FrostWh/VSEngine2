@@ -1,9 +1,6 @@
 #include "VSSynchronize.h"
-
 using namespace VSEngine2;
-
 VSCriticalSection g_SafeCS;
-
 void VSSynchronize::VSSafeOutPutDebugString(const TCHAR * pcString, ...)
 {
 	g_SafeCS.Lock();
@@ -13,7 +10,6 @@ void VSSynchronize::VSSafeOutPutDebugString(const TCHAR * pcString, ...)
 	OutputDebugString(VSSystem::ms_sLogBuffer);
 	g_SafeCS.Unlock();
 }
-
 unsigned int VSSynchronize::WaitAll(VSSynchronize * * pSynchronize, unsigned int uiNum, bool bWaitAll,DWORD dwMilliseconds)
 {
 	VSMAC_ASSERT(uiNum >=1 && uiNum <= MAXIMUM_WAIT_OBJECTS);
@@ -35,7 +31,6 @@ unsigned int VSSynchronize::WaitAll(VSSynchronize * * pSynchronize, unsigned int
 	}
 	return WF_FAILED;
 }
-
 VSEvent::VSEvent(void)
 {
 	Event = NULL;
@@ -124,12 +119,10 @@ bool VSEvent::Wait(DWORD WaitTime)
 {
 	return WaitForSingleObject(Event,WaitTime) == WAIT_OBJECT_0;
 }
-
 bool VSEvent::IsTrigger()
 {
 	return Wait(0);
 }
-
 VSMutex::VSMutex()
 {
 	m_Mutex = CreateMutex(NULL, FALSE, NULL);

@@ -2,9 +2,7 @@
 #include <VSMemManager.h>
 #include <VSArray.h>
 #include <iostream>
-
 using namespace VSEngine2;
-
 void main()
 {
 	VSArrayOrder<int> Temp;

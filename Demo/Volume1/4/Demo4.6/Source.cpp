@@ -4,9 +4,7 @@
 #include <VSList.h>
 #include <VSQueue.h>
 #include <iostream>
-
 using namespace VSEngine2;
-
 void main()
 {
 	VSQueue<int> Queue;

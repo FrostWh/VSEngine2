@@ -1,8 +1,6 @@
 #ifndef VSLOG_H
 #define VSLOG_H
-
 #include "VSFile.h"
-
 namespace VSEngine2
 {
 

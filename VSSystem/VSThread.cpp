@@ -1,5 +1,4 @@
 #include "VSThread.h"
-
 using namespace VSEngine2;
 
 
@@ -54,7 +53,7 @@ void VSThread::SetPriority(Priority p)
 
 //------------------------------------------------------------------------------
 void VSThread::Start()
-{
+{	
 	if (m_ThreadState == TS_SUSPEND)
 	{
 		ResumeThread((HANDLE)m_hThread);
@@ -69,8 +68,8 @@ void VSThread::Suspend()
 		SuspendThread((HANDLE)m_hThread);
 		m_ThreadState = TS_SUSPEND;
 	}
+	
 }
-
 void VSThread::Sleep(DWORD dwMillseconds)
 {
 	if (m_ThreadState == TS_START)
@@ -110,15 +109,15 @@ void VSThread::SetThreadName(const TCHAR* name)
 	};
 
 	THREADNAME_INFO info;
-	info.dwType = 0x1000;
-	info.szName = name;
+	info.dwType     = 0x1000;
+	info.szName     = name;
 	info.dwThreadID = ::GetCurrentThreadId();
-	info.dwFlags = 0;
+	info.dwFlags    = 0;
 	__try
 	{
 		RaiseException(0x406D1388, 0, sizeof(info) / sizeof(DWORD), (DWORD*)&info);
 	}
-	__except (EXCEPTION_CONTINUE_EXECUTION)
+	__except(EXCEPTION_CONTINUE_EXECUTION)
 	{
 	}
 }
@@ -128,12 +127,10 @@ const TCHAR* VSThread::GetThreadName()
 {
 	return _T("VSThread");
 }
-
 bool VSThread::IsStopTrigger()
 {
 	return m_StopEvent.IsTrigger();
 }
-
 //------------------------------------------------------------------------------
 void VSThread::Stop()
 {

@@ -1,14 +1,11 @@
 #ifndef VSALLOC_H
 #define VSALLOC_H
-
 #include "VSMemManager.h"
-
 #ifdef VSDATESTRUCT_EXPORTS
 #define VSDATESTRUCT_API __declspec(dllexport) 
 #else 
 #define VSDATESTRUCT_API __declspec(dllimport) 
 #endif
-
 namespace VSEngine2
 {
 	template<class KEY, class VALUE>
@@ -17,7 +14,7 @@ namespace VSEngine2
 	public:
 		KEY		Key;
 		VALUE	Value;
-		void operator= (const MapElement<KEY, VALUE>& Element)
+		void operator= (const MapElement<KEY, VALUE> & Element)
 		{
 			Key = Element.Key;
 			Value = Element.Value;
@@ -26,12 +23,12 @@ namespace VSEngine2
 		{
 
 		}
-		MapElement(const MapElement<KEY, VALUE>& Element)
+		MapElement(const MapElement<KEY, VALUE> & Element)
 		{
 			Key = Element.Key;
 			Value = Element.Value;
 		}
-		MapElement(const KEY& _Key, const VALUE& _Value)
+		MapElement(const KEY &_Key, const VALUE &_Value)
 		{
 			Key = _Key;
 			Value = _Value;
@@ -42,8 +39,8 @@ namespace VSEngine2
 		}
 
 	};
-	template <class KEY, class VALUE, class N>
-	void Merge(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1, N Compare)
+	template <class KEY, class VALUE,class N>
+	void Merge(MapElement<KEY, VALUE> *pBuffer, MapElement<KEY, VALUE> *TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1,N Compare)
 	{
 
 		unsigned int uiIndex1 = uiIndex0 + uiIndexLength0;
@@ -84,8 +81,8 @@ namespace VSEngine2
 		}
 
 	}
-	template <class KEY, class VALUE, class N>
-	void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int  uiBufferLength, N Compare)
+	template <class KEY, class VALUE,class N>
+	void MergeSort(MapElement<KEY, VALUE> *pBuffer, MapElement<KEY, VALUE> *TempBuffer, unsigned int  uiBufferLength,N Compare)
 	{
 		unsigned int uiDetLength = 1;
 		unsigned int uiNumSwap = 0;
@@ -117,11 +114,11 @@ namespace VSEngine2
 		}
 		if ((uiNumSwap % 2) != 0)
 		{
-			VSMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+			VSMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>)* uiBufferLength);
 		}
 	}
 	template <class KEY, class VALUE>
-	void Merge(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1)
+	void Merge(MapElement<KEY, VALUE> *pBuffer, MapElement<KEY, VALUE> *TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1)
 	{
 
 		unsigned int uiIndex1 = uiIndex0 + uiIndexLength0;
@@ -163,7 +160,7 @@ namespace VSEngine2
 
 	}
 	template <class KEY, class VALUE>
-	void MergeSort(MapElement<KEY, VALUE>* pBuffer, MapElement<KEY, VALUE>* TempBuffer, unsigned int  uiBufferLength)
+	void MergeSort(MapElement<KEY, VALUE> *pBuffer, MapElement<KEY, VALUE> *TempBuffer, unsigned int  uiBufferLength)
 	{
 		unsigned int uiDetLength = 1;
 		unsigned int uiNumSwap = 0;
@@ -195,12 +192,12 @@ namespace VSEngine2
 		}
 		if ((uiNumSwap % 2) != 0)
 		{
-			VSMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>) * uiBufferLength);
+			VSMemcpy(TempBuffer, pBuffer, sizeof(MapElement<KEY, VALUE>)* uiBufferLength);
 		}
 	}
 
 	template <class T>
-	void Merge(T* pBuffer, T* TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1)
+	void Merge(T *pBuffer, T *TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1)
 	{
 
 		unsigned int uiIndex1 = uiIndex0 + uiIndexLength0;
@@ -242,7 +239,7 @@ namespace VSEngine2
 
 	}
 	template <class T>
-	void MergeSort(T* pBuffer, T* TempBuffer, unsigned int  uiBufferLength)
+	void MergeSort(T *pBuffer, T *TempBuffer, unsigned int  uiBufferLength)
 	{
 		unsigned int uiDetLength = 1;
 		unsigned int uiNumSwap = 0;
@@ -274,12 +271,12 @@ namespace VSEngine2
 		}
 		if ((uiNumSwap % 2) != 0)
 		{
-			VSMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+			VSMemcpy(TempBuffer, pBuffer, sizeof(T)* uiBufferLength);
 		}
 	}
 
 	template <class T, class N>
-	void Merge(T* pBuffer, T* TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1, N Compare)
+	void Merge(T *pBuffer, T *TempBuffer, unsigned int uiIndex0, unsigned int uiIndexLength0, unsigned int uiIndexLength1, N Compare)
 	{
 
 		unsigned int uiIndex1 = uiIndex0 + uiIndexLength0;
@@ -321,7 +318,7 @@ namespace VSEngine2
 
 	}
 	template <class T, class N>
-	void MergeSort(T* pBuffer, T* TempBuffer, unsigned int  uiBufferLength, N Compare)
+	void MergeSort(T *pBuffer, T *TempBuffer, unsigned int  uiBufferLength, N Compare)
 	{
 		unsigned int uiDetLength = 1;
 		unsigned int uiNumSwap = 0;
@@ -353,37 +350,36 @@ namespace VSEngine2
 		}
 		if ((uiNumSwap % 2) != 0)
 		{
-			VSMemcpy(TempBuffer, pBuffer, sizeof(T) * uiBufferLength);
+			VSMemcpy(TempBuffer, pBuffer, sizeof(T)* uiBufferLength);
 		}
 	}
-
-	template <class T, VSMemManagerFun MMFun = VSMemObject::GetMemManager>
+	template <class T,VSMemManagerFun MMFun = VSMemObject::GetMemManager>
 	class VSContainer : public VSMemObject
 	{
 	protected:
-		T* New(unsigned int uiNum)
+		T * New(unsigned int uiNum)
 		{
 			if (!uiNum)
 			{
 				return NULL;
 			}
 #ifdef USE_CUSTOM_NEW
-			T* pPtr = (T*)MMFun().Allocate(uiNum * sizeof(T), 0, true);
+			T* pPtr = (T *)MMFun().Allocate(uiNum * sizeof(T),0,true);
 			VSMAC_ASSERT(pPtr);
 			if (!pPtr)
 			{
 				return NULL;
 			}
-			// 			if (ValueBase<T>::NeedsConstructor)
-			// 			{
-			// 				for (unsigned int i = 0 ; i < uiNum ; i++)
-			// 				{
-			// 					VS_NEW(pPtr + i)T();
-			// 				}
-			// 			}
+// 			if (ValueBase<T>::NeedsConstructor)
+// 			{
+// 				for (unsigned int i = 0 ; i < uiNum ; i++)
+// 				{
+// 					VS_NEW(pPtr + i)T();
+// 				}
+// 			}
 #else
 			T* pPtr = (T*)malloc(sizeof(T) * uiNum)
-				VSMAC_ASSERT(pPtr);
+			VSMAC_ASSERT(pPtr);
 			if (!pPtr)
 			{
 				return NULL;
@@ -392,31 +388,31 @@ namespace VSEngine2
 			return pPtr;
 		}
 
-		void Delete(T*& pPtr, unsigned int uiNum)
+		void Delete(T * & pPtr,unsigned int uiNum)
 		{
 			if (!pPtr)
 			{
-				return;
+				return ;
 			}
 #ifdef USE_CUSTOM_NEW
 			if (uiNum > 0)
 			{
 				if (ValueBase<T>::NeedsDestructor)
 				{
-					for (unsigned int i = 0; i < uiNum; i++)
+					for (unsigned int i = 0 ; i < uiNum ; i++)
 					{
 						(pPtr + i)->~T();
 					}
 				}
 			}
 
-			MMFun().Deallocate((char*)pPtr, 0, true);
+			MMFun().Deallocate((char *)pPtr,0,true);
 			pPtr = NULL;
 #else
 			free(pPtr);
 			pPtr = NULL;
 #endif
-
+			
 		}
 
 	};

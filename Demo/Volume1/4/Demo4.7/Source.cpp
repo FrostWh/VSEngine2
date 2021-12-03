@@ -2,9 +2,7 @@
 #include <VSMemManager.h>
 #include <VSMatch.h>
 #include <iostream>
-
 using namespace VSEngine2;
-
 void main()
 {
 	VSMatch Match;

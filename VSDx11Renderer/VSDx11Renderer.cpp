@@ -363,7 +363,7 @@ VSDX11Renderer::VSDX11Renderer(HWND hMainWindow, unsigned int uiScreenWidth, uns
 
 	DeviceFlags |= D3D11_CREATE_DEVICE_SINGLETHREADED;
 #ifdef _DEBUG
-	//DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
 	UINT numDriverTypes = ARRAYSIZE(ms_dwDevTypes);

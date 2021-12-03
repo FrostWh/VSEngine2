@@ -211,10 +211,6 @@ namespace VSEngine2
 		FbxIOSettings *pIOSettings = FbxIOSettings::Create(m_pFbxSdkManager, IOSROOT);
 		m_pFbxSdkManager->SetIOSettings(pIOSettings);
 
-		FbxString lPath = FbxGetApplicationDirectory();
-		FbxString lExtension = "dll";
-		m_pFbxSdkManager->LoadPluginsDirectory(lPath.Buffer(), lExtension.Buffer());
-
 		int lSDKMajor,  lSDKMinor,  lSDKRevision;
 		FbxManager::GetFileFormatVersion(lSDKMajor, lSDKMinor, lSDKRevision);
 		VSOutPutDebugString("FBX SDK version is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
@@ -248,7 +244,9 @@ namespace VSEngine2
 			printf("Error: Import Scene\n");
 			return false;
 		}
-		
+		FbxAxisSystem CurSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
+		FbxAxisSystem VSEngineSystem(FbxAxisSystem::eZAxis, (FbxAxisSystem::EFrontVector)(-FbxAxisSystem::eParityOdd), FbxAxisSystem::eRightHanded);
+		VSEngineSystem.ConvertScene(m_pFbxScene);
 		bool bIsError = false;
 		if (m_CurExportType == ET_STATIC_MESH)
 		{
@@ -277,8 +275,10 @@ namespace VSEngine2
 			m_pNode = VS_NEW VSSkelectonMeshNode();
 			m_pSkeleton = VS_NEW VSSkelecton();
 			GetSkeleton(m_pFbxScene->GetRootNode());
-			//用EvaluateLocalTransform获取信息 Z轴 要镜像 就可以了
-			m_pSkeleton->SetLocalScale(VSVector3(1.0f,1.0f,-1.0f));
+			VSMatrix3X3 M1(1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f,
+				0.0f, 1.0f, 0.0f);
+			m_pSkeleton->SetLocalRotate(M1);
 			m_pSkeleton->CreateBoneArray();
 
 			m_pGeoNode = VS_NEW VSGeometryNode();
