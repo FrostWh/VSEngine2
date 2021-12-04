@@ -3,22 +3,28 @@
 #include "VSAnimTree.h"
 #include "VSGraphicInclude.h"
 #include "VSStream.h"
+
 using namespace VSEngine2;
-IMPLEMENT_RTTI(VSSkelectonMeshNode,VSModelMeshNode)
-BEGIN_ADD_PROPERTY(VSSkelectonMeshNode,VSModelMeshNode)
-REGISTER_PROPERTY(m_pSkelecton,Skelecton,VSProperty::F_SAVE_LOAD_CLONE| VSProperty::F_REFLECT_NAME)
+
+IMPLEMENT_RTTI(VSSkelectonMeshNode, VSModelMeshNode)
+
+BEGIN_ADD_PROPERTY(VSSkelectonMeshNode, VSModelMeshNode)
+REGISTER_PROPERTY(m_pSkelecton, Skelecton, VSProperty::F_SAVE_LOAD_CLONE | VSProperty::F_REFLECT_NAME)
 REGISTER_PROPERTY(m_pAnimSet, AnimSet, VSProperty::F_SAVE_LOAD_CLONE | VSProperty::F_REFLECT_NAME)
 REGISTER_PROPERTY(m_pAnimTree, pAnimTree, VSProperty::F_SAVE_LOAD_CLONE)
 REGISTER_PROPERTY(m_pSocketArray, SocketArray, VSProperty::F_SAVE_LOAD_CLONE)
 END_ADD_PROPERTY
+
 IMPLEMENT_INITIAL_BEGIN(VSSkelectonMeshNode)
 ADD_PRIORITY(VSGeometry)
 ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
 ADD_TERMINAL_FUNCTION_WITH_PRIORITY(TerminalDefaultState)
 IMPLEMENT_INITIAL_END
+
 VSSkelectonMeshNodePtr VSSkelectonMeshNode::Default = NULL;
 bool VSSkelectonMeshNode::ms_bIsEnableASYNLoader = true;
 bool VSSkelectonMeshNode::ms_bIsEnableGC = true;
+
 VSSkelectonMeshNode::VSSkelectonMeshNode()
 {
 	m_pSkelecton = NULL;
@@ -27,7 +33,7 @@ VSSkelectonMeshNode::VSSkelectonMeshNode()
 
 	m_pAnimTree = NULL;
 	m_pAnimTreeInstance = NULL;
-	
+
 }
 VSSkelectonMeshNode::~VSSkelectonMeshNode()
 {
@@ -47,7 +53,7 @@ bool VSSkelectonMeshNode::InitialDefaultState()
 	Default = VS_NEW VSSkelectonMeshNode();
 	VSGeometryNodePtr GeometryNode = VS_NEW VSGeometryNode();
 	Default->AddChild(GeometryNode);
-	VSGeometryPtr Geometry = (VSGeometry *)VSObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
+	VSGeometryPtr Geometry = (VSGeometry*)VSObject::CloneCreateObject(VSGeometry::GetDefaultRenderCube());
 	GeometryNode->AddChild(Geometry);
 	Default->CreateLocalAABB();
 	GeometryNode->SetLocalScale(VSVector3(100.0f, 100.0f, 100.0f));
@@ -59,17 +65,17 @@ bool VSSkelectonMeshNode::TerminalDefaultState()
 	Default = NULL;
 	return true;
 }
-void VSSkelectonMeshNode::SetSkelecton(VSSkelecton * pSkelecton)
-{	
-	if(m_pSkelecton)
+void VSSkelectonMeshNode::SetSkelecton(VSSkelecton* pSkelecton)
+{
+	if (m_pSkelecton)
 	{
 		m_pSkelecton->m_pParent = NULL;
 	}
 	m_pSkelecton = pSkelecton;
 	m_pSkelecton->m_pParent = this;
-	
+
 }
-VSSocketNode * VSSkelectonMeshNode::GetSocket(const VSUsedName &SocketName)
+VSSocketNode* VSSkelectonMeshNode::GetSocket(const VSUsedName& SocketName)
 {
 	for (unsigned int i = 0; i < m_pSocketArray.GetNum(); i++)
 	{
@@ -80,13 +86,13 @@ VSSocketNode * VSSkelectonMeshNode::GetSocket(const VSUsedName &SocketName)
 	}
 	return NULL;
 }
-VSSocketNode * VSSkelectonMeshNode::CreateSocket(const VSUsedName & BoneName, const VSUsedName &SocketName)
+VSSocketNode* VSSkelectonMeshNode::CreateSocket(const VSUsedName& BoneName, const VSUsedName& SocketName)
 {
 	if (!m_pSkelecton)
 	{
 		return NULL;
 	}
-	VSBoneNode * pBone = m_pSkelecton->GetBoneNode(BoneName);
+	VSBoneNode* pBone = m_pSkelecton->GetBoneNode(BoneName);
 	if (!pBone)
 	{
 		return NULL;
@@ -100,19 +106,19 @@ VSSocketNode * VSSkelectonMeshNode::CreateSocket(const VSUsedName & BoneName, co
 		}
 	}
 
-	VSSocketNode * pSocketNode = VS_NEW VSSocketNode();
+	VSSocketNode* pSocketNode = VS_NEW VSSocketNode();
 	pBone->AddChild(pSocketNode);
 	pSocketNode->m_cName = SocketName;
 	m_pSocketArray.AddElement(pSocketNode);
 	return pSocketNode;
 }
-void VSSkelectonMeshNode::DeleteSocket(const VSUsedName &SocketName)
+void VSSkelectonMeshNode::DeleteSocket(const VSUsedName& SocketName)
 {
 	for (unsigned int i = 0; i < m_pSocketArray.GetNum(); i++)
 	{
 		if (m_pSocketArray[i]->m_cName == SocketName)
 		{
-			VSBoneNode * pSocketParent = (VSBoneNode *)(m_pSocketArray[i]->GetParent());
+			VSBoneNode* pSocketParent = (VSBoneNode*)(m_pSocketArray[i]->GetParent());
 			VSMAC_ASSERT(pSocketParent);
 			pSocketParent->DeleteChild(m_pSocketArray[i]);
 			m_pSocketArray.Erase(i);
@@ -120,7 +126,7 @@ void VSSkelectonMeshNode::DeleteSocket(const VSUsedName &SocketName)
 		}
 	}
 }
-void VSSkelectonMeshNode::SetAnimSet(VSAnimSet * pAnimSet)
+void VSSkelectonMeshNode::SetAnimSet(VSAnimSet* pAnimSet)
 {
 	if (m_pAnimSet == pAnimSet)
 	{
@@ -146,7 +152,7 @@ void VSSkelectonMeshNode::UpdateLocalAABB()
 		SaveBoneMatrix.AddBufferNum(m_pSkelecton->GetBoneNum());
 		for (unsigned int i = 0; i < m_pSkelecton->GetBoneNum(); i++)
 		{
-			VSBoneNode * pBone = m_pSkelecton->GetBoneNode(i);
+			VSBoneNode* pBone = m_pSkelecton->GetBoneNode(i);
 			if (pBone)
 			{
 				VSTransform T = pBone->GetLocalTransform();
@@ -154,16 +160,16 @@ void VSSkelectonMeshNode::UpdateLocalAABB()
 			}
 		}
 
-		
+
 		VSVector3 MaxPos = m_pSkelecton->m_OriginLocalBV.GetMaxPoint();
 		VSVector3 MinPos = m_pSkelecton->m_OriginLocalBV.GetMinPoint();
 		VSTransform SkelectonLocalT = m_pSkelecton->GetLocalTransform();
 		for (unsigned int i = 0; i < m_pAnimSet->GetAnimNum(); i++)
 		{
-			VSAnimR * pAnimR = m_pAnimSet->GetAnim(i);
-			while (!pAnimR->IsLoaded()){};
+			VSAnimR* pAnimR = m_pAnimSet->GetAnim(i);
+			while (!pAnimR->IsLoaded()) {};
 
-			VSAnim * pAnim = pAnimR->GetResource();
+			VSAnim* pAnim = pAnimR->GetResource();
 			VSREAL AnimLength = pAnim->GetAnimLength();
 
 			PlayAnim(pAnim->m_cName.GetString(), 1.0f, VSController::RT_CLAMP);
@@ -174,7 +180,7 @@ void VSSkelectonMeshNode::UpdateLocalAABB()
 				m_pSkelecton->UpdateAll(0.0f);
 				for (unsigned int j = 0; j < m_pSkelecton->GetBoneNum(); j++)
 				{
-					VSBoneNode * pBone = m_pSkelecton->GetBoneNode(j);
+					VSBoneNode* pBone = m_pSkelecton->GetBoneNode(j);
 					if (pBone)
 					{
 						//change to local space
@@ -194,13 +200,13 @@ void VSSkelectonMeshNode::UpdateLocalAABB()
 
 					}
 				}
-				
+
 			}
 		}
 		m_pAnimSequence = NULL;
 		for (unsigned int i = 0; i < m_pSkelecton->GetBoneNum(); i++)
 		{
-			VSBoneNode * pBone = m_pSkelecton->GetBoneNode(i);
+			VSBoneNode* pBone = m_pSkelecton->GetBoneNode(i);
 			if (pBone)
 			{
 				pBone->SetLocalMat(SaveBoneMatrix[i]);
@@ -211,34 +217,34 @@ void VSSkelectonMeshNode::UpdateLocalAABB()
 		m_pSkelecton->SetLocalBV(SkelectonBV);
 	}
 }
-void VSSkelectonMeshNode::SetAnimTree(VSAnimTreeR * pAnimTree)
+void VSSkelectonMeshNode::SetAnimTree(VSAnimTreeR* pAnimTree)
 {
-	if(pAnimTree)
+	if (pAnimTree)
 	{
 		m_pAnimTree = pAnimTree;
 		m_pAnimTree->AddLoadEventObject(this);
 	}
 }
 
-void VSSkelectonMeshNode::LoadedEvent(VSResourceProxyBase * pResourceProxy, int Data)
+void VSSkelectonMeshNode::LoadedEvent(VSResourceProxyBase* pResourceProxy, int Data)
 {
 	if (m_pAnimTree == pResourceProxy)
 	{
-		m_pAnimTreeInstance = (VSAnimTree *)VSObject::CloneCreateObject(m_pAnimTree->GetResource());
+		m_pAnimTreeInstance = (VSAnimTree*)VSObject::CloneCreateObject(m_pAnimTree->GetResource());
 		m_pAnimTreeInstance->SetObject(this);
 	}
 }
-bool VSSkelectonMeshNode::PostLoad(void * pDate)
+bool VSSkelectonMeshNode::PostLoad(void* pDate)
 {
 	VSModelMeshNode::PostLoad(pDate);
 	if (m_pAnimTree)
 	{
 		m_pAnimTree->AddLoadEventObject(this);
 	}
-	
+
 	return true;
 }
-bool VSSkelectonMeshNode::PostClone(VSObject * pObjectSrc)
+bool VSSkelectonMeshNode::PostClone(VSObject* pObjectSrc)
 {
 	VSModelMeshNode::PostClone(pObjectSrc);
 	if (m_pAnimTree)
@@ -247,7 +253,7 @@ bool VSSkelectonMeshNode::PostClone(VSObject * pObjectSrc)
 	}
 	return true;
 }
-void VSSkelectonMeshNode::SetAnimTreeNodePara(const VSUsedName & ShowName, void * pPara)
+void VSSkelectonMeshNode::SetAnimTreeNodePara(const VSUsedName& ShowName, void* pPara)
 {
 	if (m_pAnimTreeInstance)
 	{
@@ -265,8 +271,8 @@ void VSSkelectonMeshNode::UpdateNodeAll(double dAppTime)
 	{
 		UpdateController(dAppTime);
 	}
-	
-	
+
+
 	UpdateTransform(dAppTime);
 
 	// no visible no update
@@ -278,32 +284,32 @@ void VSSkelectonMeshNode::UpdateNodeAll(double dAppTime)
 	{
 		m_pSkelecton->UpdateNoChild(dAppTime);
 	}
-	
-	for (unsigned int i = 0; i < m_pChild.GetNum(); i++)	
-	{ 
-		if (m_pChild[i]) 
-			m_pChild[i]->UpdateNodeAll(dAppTime); 
-	} 
 
-	if(m_bIsChanged)
+	for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
 	{
-		UpdateWorldBound(dAppTime); 
+		if (m_pChild[i])
+			m_pChild[i]->UpdateNodeAll(dAppTime);
+	}
+
+	if (m_bIsChanged)
+	{
+		UpdateWorldBound(dAppTime);
 	}
 	m_bIsChanged = false;
 
 }
-void VSSkelectonMeshNode::ComputeNodeVisibleSet(VSCuller & Culler,bool bNoCull,double dAppTime)
+void VSSkelectonMeshNode::ComputeNodeVisibleSet(VSCuller& Culler, bool bNoCull, double dAppTime)
 {
 
 	if (!Culler.CullConditionNode(this))
 	{
-		UpDateView(Culler,dAppTime);
-		for(unsigned int i = 0 ; i < m_pChild.GetNum() ; i++)
+		UpDateView(Culler, dAppTime);
+		for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
 		{
-			if(m_pChild[i])
+			if (m_pChild[i])
 			{
 
-				m_pChild[i]->ComputeVisibleSet(Culler,true,dAppTime);
+				m_pChild[i]->ComputeVisibleSet(Culler, true, dAppTime);
 
 
 			}
@@ -313,21 +319,21 @@ void VSSkelectonMeshNode::ComputeNodeVisibleSet(VSCuller & Culler,bool bNoCull,d
 		{
 			m_pSkelecton->ComputeNodeVisibleSet(Culler, bNoCull, dAppTime);
 		}
-		
+
 	}
 
 }
 void VSSkelectonMeshNode::UpdateWorldBound(double dAppTime)
 {
-	bool bFoundFirstBound = false; 
-	for (unsigned int i = 0; i < m_pChild.GetNum(); i++) 
-	{ 	
-		if(m_pChild[i])
+	bool bFoundFirstBound = false;
+	for (unsigned int i = 0; i < m_pChild.GetNum(); i++)
+	{
+		if (m_pChild[i])
 		{
-			if(!bFoundFirstBound)
+			if (!bFoundFirstBound)
 			{
 				m_WorldBV = m_pChild[i]->m_WorldBV;
-				bFoundFirstBound = true; 
+				bFoundFirstBound = true;
 			}
 			else
 			{
@@ -339,10 +345,10 @@ void VSSkelectonMeshNode::UpdateWorldBound(double dAppTime)
 	}
 	if (m_pSkelecton)
 	{
-		if(!bFoundFirstBound)
+		if (!bFoundFirstBound)
 		{
 			m_WorldBV = m_pSkelecton->m_WorldBV;
-			bFoundFirstBound = true; 
+			bFoundFirstBound = true;
 		}
 		else
 		{
@@ -368,7 +374,7 @@ void VSSkelectonMeshNode::UpdateWorldBound(double dAppTime)
 		m_pParent->m_bIsChanged = true;
 	}
 }
-bool VSSkelectonMeshNode::PlayAnim(const VSString & AnimName,VSREAL fRatio,unsigned int uiRepeatType)
+bool VSSkelectonMeshNode::PlayAnim(const VSString& AnimName, VSREAL fRatio, unsigned int uiRepeatType)
 {
 	if (m_pAnimSequence == NULL)
 	{
@@ -376,7 +382,7 @@ bool VSSkelectonMeshNode::PlayAnim(const VSString & AnimName,VSREAL fRatio,unsig
 
 		m_bIsStatic = false;
 
-		
+
 
 	}
 
@@ -405,7 +411,7 @@ void VSSkelectonMeshNode::UpdateController(double dAppTime)
 		}
 		m_pAnimTreeInstance->Update(dAppTime);
 	}
-	if(m_pAnimSequence && m_bEnable && m_pAnimSequence->m_bEnable)
+	if (m_pAnimSequence && m_bEnable && m_pAnimSequence->m_bEnable)
 	{
 		m_pAnimSequence->ClearFlag();
 		m_pAnimSequence->Update(dAppTime);

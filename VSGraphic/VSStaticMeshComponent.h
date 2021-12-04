@@ -1,6 +1,8 @@
 #ifndef VSSTATICMESHCOMPONENT_H
 #define VSSTATICMESHCOMPONENT_H
+
 #include "VSMeshComponent.h"
+
 namespace VSEngine2
 {
 
@@ -13,6 +15,7 @@ namespace VSEngine2
 		//RTTI
 		DECLARE_RTTI;
 		DECLARE_INITIAL
+
 	public:
 		VSStaticMeshComponent();
 		virtual ~VSStaticMeshComponent();
@@ -25,10 +28,10 @@ namespace VSEngine2
 		
 	protected:
 		VSStaticMeshNodeRPtr m_pStaticMeshResource;
-		
-
 	};
+
 	DECLARE_Ptr(VSStaticMeshComponent);
 	VSTYPE_MARCO(VSStaticMeshComponent);
 }
+
 #endif

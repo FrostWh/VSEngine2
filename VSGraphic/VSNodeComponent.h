@@ -1,10 +1,12 @@
 #ifndef VSNODECOMPONENT_H
 #define VSNODECOMPONENT_H
+
 #include "VSNode.h"
 
 namespace VSEngine2
 {
 	class VSSocketNode;
+
 	class VSGRAPHIC_API VSNodeComponent : public VSNode
 	{
 		//PRIORITY
@@ -31,11 +33,13 @@ namespace VSEngine2
 		virtual void UpdateTransform(double dAppTime);
 		virtual void UpdateLightState(double dAppTime);
 		virtual void UpdateCameraState(double dAppTime);
+
 	protected:
 		virtual void UpdateNodeAll(double dAppTime);
 		VSUsedName m_AttachSocketName;
 		VSSocketNode *  m_pAttachSocket;
 	};
+
  	DECLARE_Ptr(VSNodeComponent);
  	VSTYPE_MARCO(VSNodeComponent);
 
@@ -55,4 +59,5 @@ namespace VSEngine2
 		}
 	}
 }
+
 #endif

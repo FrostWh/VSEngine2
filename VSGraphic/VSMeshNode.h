@@ -1,12 +1,15 @@
 #ifndef VSMESHNODE_H
 #define VSMESHNODE_H
+
 #include "VSNode.h"
 #include "VSResource.h"
+
 namespace VSEngine2
 {
 	class VSGeometryNode;
 	class VSSwitchNode;
 	class VSStream;
+
 	class VSGRAPHIC_API VSMeshNode : public VSNode,public VSResource
 	{
 		//PRIORITY
@@ -14,6 +17,7 @@ namespace VSEngine2
 		//RTTI
 		DECLARE_RTTI;
 		DECLARE_INITIAL
+
 	public:
 
 		VSMeshNode();
